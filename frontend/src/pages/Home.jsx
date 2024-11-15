@@ -1,15 +1,13 @@
-import { useState, useEffect, useContext } from "react"
+import { useState, useEffect } from "react"
 // import { socket } from "../services/socket"
 import { Link, useNavigate } from "react-router-dom"
 import { Button, Input, useDisclosure } from "@nextui-org/react"
-import UserContext from "../services/userContext"
 import Container from "../components/Container"
 import Header from "../components/Header"
 import Footer from "../components/Footer"
 import KeySVG from "../assets/svg/KeySVG"
-import Login from "../components/Login"
 import LangModal from "../components/LangModal"
-import JoinRoom from "../components/JoinRoom"
+import CreateRoom from "../components/CreateRoom"
 import OpenRoom from "../components/OpenRoom"
 import OpenRoomsHeader from "../components/OpenRoomsHeader"
 
@@ -17,7 +15,6 @@ function Home() {
   const navigate = useNavigate()
   const loginModal = useDisclosure()
   const langModal = useDisclosure()
-  const { user, connected } = useContext(UserContext)
   const [nickname, setNickname] = useState("")
   const [roomCode, setRoomCode] = useState("")
   const [roomTitle, setRoomTitle] = useState("")
@@ -66,7 +63,7 @@ function Home() {
   const handleJoinRoom = () => {
     let nickname = connected ? user.username : nickname
     console.log(nickname + " " + roomCode)
-    socket.emit("joinRoom", {
+    socket.emit("CreateRoom", {
       roomCode: roomCode,
       nickname,
     })
@@ -83,10 +80,6 @@ function Home() {
   return (
     <div>
       <Container>
-        <Login
-          isOpen={loginModal.isOpen}
-          onOpenChange={loginModal.onOpenChange}
-        />
         <LangModal
           isOpen={langModal.isOpen}
           onOpenChange={langModal.onOpenChange}
@@ -96,25 +89,12 @@ function Home() {
           openLangModal={langModal.onOpen}
         />
         <div className="mt-32 w-full flex gap-x-4 max-md:flex-col-reverse max-md:gap-y-4 h-[70%] max-md:h-auto">
+          <div className="bg-black/10 backdrop-blur-sm rounded-lg p-2 w-1/2 max-md:w-full flex flex-col justify-between">
+            <CreateRoom />
+          </div>
           <div className="bg-black/10 backdrop-blur-sm rounded-lg p-2 w-1/2 max-md:w-full overflow-auto">
             <OpenRoomsHeader />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-            <OpenRoom />
-          </div>
-          <div className="bg-black/10 backdrop-blur-sm rounded-lg p-2 w-1/2 max-md:w-full flex flex-col justify-between">
-            <JoinRoom />
-            <span className="block w-[75%] h-[3px] rounded-full mx-auto bg-gray-200/20" />
-            To create room you need to login, it's very easy
+            Тут будет инструкция
           </div>
         </div>
         <Footer />

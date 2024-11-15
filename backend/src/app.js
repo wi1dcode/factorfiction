@@ -4,10 +4,7 @@ const cors = require("cors")
 const path = require("path")
 const socketIo = require("socket.io")
 
-const userRouter = require("./routes/userRouter")
-const authRouter = require("./routes/authRouter")
 const roomRouter = require("./routes/roomRouter")
-const adminRouter = require("./routes/adminRouter")
 
 const app = express()
 const server = http.createServer(app)
@@ -32,13 +29,11 @@ const io = socketIo(server, {
   transports: ["websocket", "polling"],
 })
 
-// Подключение обработчиков событий сокета после инициализации io
+// Подключение обработчиков событий сокета
 require("./socket")(io)
 
-app.use("/api", authRouter)
-app.use("/api/profile", userRouter)
+// API маршруты
 app.use("/api/room", roomRouter)
-app.use("/api/dashboard", adminRouter)
 
 // Serve the public folder for public resources
 app.use(express.static(path.join(__dirname, "../public")))

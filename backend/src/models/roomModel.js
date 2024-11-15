@@ -3,19 +3,12 @@ const { Schema, model } = require("mongoose")
 const Room = new Schema(
   {
     creator: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
-
     title: {
       type: String,
       required: true,
-    },
-    type: {
-      type: String,
-      required: true,
-      enum: ["open", "private"],
     },
     maxPlayers: {
       type: Number,
@@ -24,31 +17,46 @@ const Room = new Schema(
     },
     players: [
       {
-        type: String,
+        socketId: { type: String, required: true },
+        nickname: { type: String, required: true },
+        status: {
+          type: String,
+          enum: ["connected", "disconnected"],
+          default: "connected",
+        },
       },
     ],
     code: {
       type: String,
+      unique: true,
     },
     questions: [
       {
         text: String,
         truth: Boolean,
         author: String,
+        votes: [
+          {
+            nickname: String,
+            vote: Boolean,
+          },
+        ],
       },
     ],
+    interval: {
+      type: String,
+      enum: ["15s", "30s", "1m", "2m", "3m", "5m"],
+      default: "30s",
+    },
     results: [
       {
         player: String,
         score: Number,
       },
     ],
-    winner: {
-      type: String,
-    },
     status: {
       type: String,
-      enum: ["created", "proccess", "finished"],
+      enum: ["created", "process", "finished"],
       default: "created",
     },
   },

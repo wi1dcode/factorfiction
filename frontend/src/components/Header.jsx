@@ -15,18 +15,7 @@ function Header({ openLoginModal, openLangModal }) {
   return (
     <div className="flex items-start justify-between">
       <div className="flex gap-x-2">
-        {isHomePage ? (
-          <Button
-            isIconOnly
-            onClick={openLangModal}
-            radius="sm"
-            aria-label="Language"
-            size="lg"
-            className="bg-black/20 border-2 border-white/60 text-lg"
-          >
-            <LangSVG />
-          </Button>
-        ) : (
+        {!isHomePage && (
           <Button
             isIconOnly
             radius="sm"
@@ -44,13 +33,13 @@ function Header({ openLoginModal, openLangModal }) {
       </div>
       <Button
         isIconOnly
-        aria-label="Profile"
-        size="lg"
+        onClick={openLangModal}
         radius="sm"
-        onClick={openLoginModal}
+        aria-label="Language"
+        size="lg"
         className="bg-black/20 border-2 border-white/60 text-lg"
       >
-        <ProfileSVG />
+        <LangSVG />
       </Button>
     </div>
   )

@@ -1,15 +1,16 @@
 const roomController = require("./controllers/roomController")
+const Room = require("./models/roomModel")
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
-    console.log("Новое подключение")
+    console.log("Новое подключение:", socket.id)
 
     socket.on("createRoom", (data) => {
-      roomController.createRoom(data, socket)
+      roomController.createRoom(data, socket, io)
     })
 
     socket.on("joinRoom", (data) => {
-      roomController.joinRoom(data, socket)
+      roomController.joinRoom(data, socket, io)
     })
 
     socket.on("startGame", (data) => {
@@ -28,8 +29,26 @@ module.exports = (io) => {
       roomController.endGame(roomId, socket, io)
     })
 
-    socket.on("disconnect", () => {
-      console.log("Пользователь отключился")
+    socket.on("disconnect", async () => {
+      try {
+        const rooms = await Room.find()
+        for (const room of rooms) {
+          const player = room.players.find((p) => p.socketId === socket.id)
+          if (player) {
+            player.status = "disconnected" // Обновляем статус игрока
+            await room.save()
+            io.to(room.code).emit("playerDisconnected", {
+              nickname: player.nickname,
+              players: room.players.map((player) => ({
+                nickname: player.nickname,
+                status: player.status,
+              })),
+            })
+          }
+        }
+      } catch (error) {
+        console.error("Ошибка при обработке отключения:", error)
+      }
     })
   })
 }
