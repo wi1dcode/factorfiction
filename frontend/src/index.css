@@ -1,0 +1,50 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import url("https://fonts.googleapis.com/css2?family=Balsamiq+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+.font-balsamiq {
+  font-family: "Balsamiq Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+/* ===== Scrollbar CSS ===== */
+
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #a0c4ff #e0f2fe; /* Светло-голубой градиент */
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    135deg,
+    #a0c4ff 0%,
+    #0fb0af 100%
+  ); /* Градиент для бегунка */
+  border-radius: 15px;
+}
+
+/* Выделение текста */
+::selection {
+  background-color: #a0c4ff; /* Светло-голубой для выделения текста */
+  color: #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+::-webkit-selection {
+  background-color: #a0c4ff; /* Светло-голубой для выделения текста */
+  color: #ffffff;
+}
